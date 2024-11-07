@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Interface</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Chats</h2>
+            <div class="session-list" id="session-list">
+                <!-- Session items will be populated here -->
+            </div>
+            <!-- Sidebar Buttons -->
+            <div class="sidebar-buttons">
+                <button class="new-session-btn" id="new-session-btn">+ New Chat</button>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div id="chat-box" class="chat-box">
+                <!-- Messages will be displayed here -->
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="loading-indicator" style="display: none;">
+                Assistant is typing...
+            </div>
+
+            <!-- Model Selection -->
+            <div class="model-selection">
+                <label for="model-select">Choose a model:</label>
+                <select id="model-select">
+                    <!-- Options will be populated dynamically -->
+                </select>
+            </div>
+
+            <!-- Message Input -->
+            <form id="message-form" class="input-container">
+              <input type="text" id="input" placeholder="Type your message..." disabled>
+              <input type="file" id="file-input" style="display: none;">
+              <button type="button" id="attach-btn">Attach</button>
+              <button type="submit" id="submit" disabled>Send</button>
+          </form>
+        </div>
+    </div>
+</body>
+</html>

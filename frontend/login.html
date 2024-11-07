@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ChatLink</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            margin-top: 10px;
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="login-btn">Login</button>
+        </form>
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        // Login function
+        async function login(event) {
+            event.preventDefault(); // Prevent the default form submission behavior
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const messageDiv = document.getElementById("message");
+
+            // Disable the login button to prevent multiple submissions
+            document.getElementById("login-btn").disabled = true;
+
+            try {
+                const response = await fetch("http://localhost:7071/api/LoginFunction", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                let data;
+                try {
+                    data = await response.json();
+                } catch (error) {
+                    throw new Error("Failed to parse server response as JSON");
+                }
+
+                if (response.ok) {
+                    localStorage.setItem("token", data.token);
+                    messageDiv.style.color = "green";
+                    messageDiv.innerText = "Login successful! Redirecting...";
+                    window.location.href = "index.html";
+                } else {
+                    messageDiv.style.color = "red";
+                    messageDiv.innerText = data.error || "Login failed!";
+                }
+            } catch (error) {
+                messageDiv.style.color = "red";
+                messageDiv.innerText = "An error occurred. Please try again.";
+                console.error("Error during login:", error.message);
+            } finally {
+                // Re-enable the login button
+                document.getElementById("login-btn").disabled = false;
+            }
+        }
+
+        // Event listener for the form submission
+        document.getElementById("login-form").addEventListener("submit", login);
+    </script>
+</body>
+</html>
